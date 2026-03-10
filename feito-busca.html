@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FEITO✅ — Encontre um Prestador</title>
+<meta name="description" content="Encontre prestadores de serviço qualificados na sua cidade. Assinatura fixa, lead inválido protegido.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:  #1A1A2E;
+    --navyM: #232341;
+    --navyL: #2D2D50;
+    --gold:  #C9A84C;
+    --goldL: #E8C76A;
+    --green: #1A8C4E;
+    --red:   #C9370A;
+    --grey:  #9999BB;
+    --offW:  #F0EEE8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--navy);
+    color: var(--offW);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* Nav */
+  nav {
+    background: rgba(26,26,46,0.97);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 2px; color: #fff;
+    text-decoration: none;
+  }
+  .nav-brand span { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold); color: var(--navy);
+    font-weight: 700; font-size: 0.82rem;
+    padding: 9px 18px; border-radius: 4px;
+    text-decoration: none; white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--goldL); }
+
+  /* Search hero */
+  .search-hero {
+    background: var(--navyM);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    padding: 36px 24px;
+  }
+  .search-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    color: #fff; margin-bottom: 20px; text-align: center;
+  }
+  .search-hero h1 span { color: var(--gold); }
+
+  /* Search bar */
+  .search-bar {
+    max-width: 700px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+  }
+  .search-bar input,
+  .search-bar select {
+    background: var(--navyL);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 13px 16px;
+    color: var(--offW);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    width: 100%;
+  }
+  .search-bar input:focus,
+  .search-bar select:focus { border-color: var(--gold); }
+  .search-bar input::placeholder { color: rgba(153,153,187,0.5); }
+  .search-bar select option { background: var(--navyM); }
+  .search-btn {
+    background: var(--gold); color: var(--navy);
+    border: none; border-radius: 6px;
+    padding: 13px 24px; font-weight: 700;
+    font-size: 0.95rem; cursor: pointer;
+    white-space: nowrap; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .search-btn:hover { background: var(--goldL); }
+
+  /* Filtros rápidos */
+  .filtros-wrap {
+    max-width: 700px; margin: 14px auto 0;
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filtro-tag {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--grey); font-size: 0.8rem;
+    padding: 6px 14px; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filtro-tag:hover,
+  .filtro-tag.active {
+    border-color: var(--gold); color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  /* Main layout */
+  .main {
+    max-width: 1000px; margin: 0 auto;
+    padding: 32px 20px;
+  }
+
+  .results-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 20px;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .results-count {
+    font-size: 0.88rem; color: var(--grey);
+  }
+  .results-count strong { color: var(--offW); }
+
+  .sort-select {
+    background: var(--navyL);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px; padding: 8px 14px;
+    color: var(--offW); font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    outline: none; cursor: pointer;
+    -webkit-appearance: none;
+  }
+
+  /* Cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .prestador-card {
+    background: var(--navyL);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.22s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    position: relative;
+  }
+  .prestador-card:hover {
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+
+  .card-top {
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .card-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--navyM);
+    border: 2px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+    overflow: hidden;
+  }
+  .card-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+  .card-info { flex: 1; min-width: 0; }
+  .card-nome {
+    font-weight: 700; font-size: 0.98rem;
+    color: #fff; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-esp {
+    font-size: 0.82rem; color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .card-local {
+    font-size: 0.78rem; color: var(--grey);
+  }
+
+  /* Selos */
+  .card-selos {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-bottom: 12px;
+  }
+  .selo {
+    font-size: 0.68rem; font-weight: 700;
+    padding: 3px 9px; border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .selo-fundador { background: rgba(201,55,10,0.2); border: 1px solid var(--red); color: #FF8060; }
+  .selo-bem     { background: rgba(201,168,76,0.15); border: 1px solid var(--gold); color: var(--gold); }
+  .selo-perfeito { background: rgba(26,140,78,0.15); border: 1px solid var(--green); color: #4ACA7F; }
+  .selo-dito    { background: rgba(100,100,200,0.15); border: 1px solid #6666CC; color: #9999EE; }
+
+  /* Nota */
+  .card-nota {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 12px;
+  }
+  .nota-stars { color: var(--gold); font-size: 0.9rem; letter-spacing: 1px; }
+  .nota-num { font-weight: 700; font-size: 0.9rem; color: var(--offW); }
+  .nota-count { font-size: 0.78rem; color: var(--grey); }
+
+  /* Desc */
+  .card-desc {
+    font-size: 0.82rem; color: var(--grey);
+    line-height: 1.55;
+    display: -webkit-box; -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  /* Footer card */
+  .card-footer {
+    display: flex; justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .card-plano {
+    font-size: 0.72rem; color: var(--grey);
+  }
+  .card-btn {
+    background: var(--gold); color: var(--navy);
+    font-weight: 700; font-size: 0.78rem;
+    padding: 7px 16px; border-radius: 4px;
+    text-decoration: none; transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .card-btn:hover { background: var(--goldL); }
+
+  /* Disponível badge */
+  .disponivel-badge {
+    position: absolute; top: 14px; right: 14px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #4ACA7F;
+    box-shadow: 0 0 6px rgba(74,202,127,0.5);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    display: none;
+  }
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; }
+  .empty-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: #fff; margin-bottom: 8px; }
+  .empty-state p { font-size: 0.9rem; color: var(--grey); }
+
+  /* CTA cadastro */
+  .cta-cadastro {
+    background: var(--navyM);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    padding: 28px 24px; text-align: center;
+    margin-top: 32px;
+  }
+  .cta-cadastro h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; color: #fff; margin-bottom: 8px;
+  }
+  .cta-cadastro p { font-size: 0.88rem; color: var(--grey); margin-bottom: 18px; }
+  .cta-cadastro a {
+    display: inline-block;
+    background: var(--gold); color: var(--navy);
+    font-weight: 700; padding: 13px 28px;
+    border-radius: 6px; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .cta-cadastro a:hover { background: var(--goldL); }
+
+  /* Modal perfil */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.7);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--navyM);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 12px;
+    max-width: 520px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(255,255,255,0.08);
+    border: none; color: var(--grey);
+    width: 32px; height: 32px; border-radius: 50%;
+    font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .modal-header {
+    background: var(--navyL);
+    border-radius: 12px 12px 0 0;
+    padding: 28px 24px;
+    display: flex; gap: 18px; align-items: flex-start;
+  }
+  .modal-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid rgba(201,168,76,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; flex-shrink: 0;
+  }
+  .modal-info h2 { font-size: 1.2rem; color: #fff; font-weight: 700; margin-bottom: 4px; }
+  .modal-info .modal-esp { font-size: 0.88rem; color: var(--gold); margin-bottom: 4px; }
+  .modal-info .modal-local { font-size: 0.82rem; color: var(--grey); }
+  .modal-body { padding: 24px; }
+  .modal-section { margin-bottom: 20px; }
+  .modal-section h4 {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 3px; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .modal-section p { font-size: 0.88rem; color: var(--grey); line-height: 1.7; }
+  .modal-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-bottom: 20px;
+  }
+  .modal-stat {
+    background: var(--navyL); border-radius: 8px;
+    padding: 12px; text-align: center;
+  }
+  .modal-stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--gold); line-height: 1; }
+  .modal-stat-l { font-size: 0.72rem; color: var(--grey); margin-top: 2px; }
+  .modal-actions { display: flex; gap: 10px; }
+  .btn-orcamento {
+    flex: 1; background: var(--gold); color: var(--navy);
+    font-weight: 700; font-size: 0.95rem;
+    padding: 13px; border: none; border-radius: 6px;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s; text-align: center;
+    text-decoration: none; display: block;
+  }
+  .btn-orcamento:hover { background: var(--goldL); }
+  .btn-wpp {
+    background: #25D366; color: #fff;
+    font-weight: 700; font-size: 0.95rem;
+    padding: 13px 18px; border: none; border-radius: 6px;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s; text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-wpp:hover { background: #20c05a; }
+
+  @media (max-width: 600px) {
+    .search-bar { grid-template-columns: 1fr; }
+    .search-btn { width: 100%; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .modal-stats { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="https://carlosaugusto5292-cloud.github.io/feito-landing/">FEITO<span>✅</span></a>
+  <a class="nav-cta" href="feito-cadastro.html">Sou prestador →</a>
+</nav>
+
+<!-- Search Hero -->
+<div class="search-hero">
+  <h1>Encontre um prestador <span>FEITO✅</span></h1>
+  <div class="search-bar">
+    <input type="text" id="busca-esp" placeholder="Especialidade (ex: Eletricista)" oninput="filtrar()">
+    <input type="text" id="busca-cidade" placeholder="Cidade (ex: Belo Horizonte)" oninput="filtrar()">
+    <button class="search-btn" onclick="filtrar()">Buscar</button>
+  </div>
+  <div class="filtros-wrap">
+    <button class="filtro-tag active" onclick="filtroRapido(this, '')">Todos</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Marido de Aluguel')">Marido de Aluguel</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Eletricista')">Eletricista</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Encanador')">Encanador</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Pintor')">Pintor</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Diarista')">Diarista</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Jardineiro')">Jardineiro</button>
+    <button class="filtro-tag" onclick="filtroRapido(this, 'Pedreiro')">Pedreiro</button>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="results-header">
+    <p class="results-count"><strong id="count-num">0</strong> prestadores encontrados</p>
+    <select class="sort-select" onchange="ordenar(this.value)">
+      <option value="nota">Melhor avaliação</option>
+      <option value="nome">Nome A–Z</option>
+      <option value="servicos">Mais serviços</option>
+    </select>
+  </div>
+
+  <div class="cards-grid" id="cards-grid"></div>
+
+  <div class="empty-state" id="empty-state">
+    <div class="empty-icon">🔍</div>
+    <h3>Nenhum prestador encontrado</h3>
+    <p>Tente buscar por outra especialidade ou cidade.<br>Novos prestadores estão se cadastrando todo dia.</p>
+  </div>
+
+  <div class="cta-cadastro">
+    <h3>Você é prestador de serviços?</h3>
+    <p>Cadastre-se na FEITO✅ e receba leads qualificados. Assinatura fixa, sem cobrança por lead.</p>
+    <a href="feito-cadastro.html">Criar meu perfil grátis →</a>
+  </div>
+</div>
+
+<!-- Modal perfil -->
+<div class="modal-overlay" id="modal" onclick="fecharModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="fecharModal()">✕</button>
+    <div class="modal-header" id="modal-header"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── Dados de exemplo (serão substituídos pelos dados reais do Google Sheets) ──
+const PRESTADORES = [
+  {
+    id: 1,
+    nome: "Carlos Augusto",
+    especialidade: "Marido de Aluguel",
+    cidade: "Ibirité",
+    estado: "MG",
+    nota: 4.9,
+    avaliacoes: 47,
+    servicos: 89,
+    descricao: "Mais de 10 anos de experiência em serviços residenciais. Instalações elétricas, hidráulica, montagem de móveis, pintura e pequenos reparos. Atendo Ibirité, Contagem e BH.",
+    plano: "profissional",
+    selos: ["fundador", "bem", "perfeito", "dito"],
+    disponivel: true,
+    avatar: "🔧",
+    telefone: "31992084142",
+    anos: 10,
+    valor_hora: 80
+  },
+  {
+    id: 2,
+    nome: "Maria Silva",
+    especialidade: "Diarista / Faxineira",
+    cidade: "Belo Horizonte",
+    estado: "MG",
+    nota: 4.7,
+    avaliacoes: 32,
+    servicos: 58,
+    descricao: "Especialista em limpeza residencial e comercial. Trabalho com produtos de qualidade e pontualidade garantida. Atendo toda região de BH.",
+    plano: "essencial",
+    selos: ["fundador", "bem"],
+    disponivel: true,
+    avatar: "🧹",
+    telefone: "31900000001",
+    anos: 6,
+    valor_hora: 60
+  },
+  {
+    id: 3,
+    nome: "João Pereira",
+    especialidade: "Eletricista",
+    cidade: "Contagem",
+    estado: "MG",
+    nota: 4.8,
+    avaliacoes: 28,
+    servicos: 41,
+    descricao: "Eletricista com CREA. Instalações, reparos, quadros elétricos, chuveiros, tomadas e iluminação. Atendo Contagem e BH com rapidez e segurança.",
+    plano: "profissional",
+    selos: ["fundador", "bem", "dito"],
+    disponivel: true,
+    avatar: "⚡",
+    telefone: "31900000002",
+    anos: 8,
+    valor_hora: 100
+  },
+  {
+    id: 4,
+    nome: "Ana Costa",
+    especialidade: "Jardineiro",
+    cidade: "Belo Horizonte",
+    estado: "MG",
+    nota: 4.6,
+    avaliacoes: 19,
+    servicos: 34,
+    descricao: "Paisagismo e manutenção de jardins residenciais e condomínios. Poda, plantio, irrigação e projeto de jardins. Atendo BH e região.",
+    plano: "essencial",
+    selos: ["fundador"],
+    disponivel: false,
+    avatar: "🌿",
+    telefone: "31900000003",
+    anos: 4,
+    valor_hora: 70
+  },
+  {
+    id: 5,
+    nome: "Roberto Lima",
+    especialidade: "Encanador / Hidráulico",
+    cidade: "Belo Horizonte",
+    estado: "MG",
+    nota: 4.5,
+    avaliacoes: 22,
+    servicos: 39,
+    descricao: "Encanador com experiência em reparos de vazamentos, instalação de banheiros, caixas d'água e sistemas hidráulicos completos.",
+    plano: "profissional",
+    selos: ["bem"],
+    disponivel: true,
+    avatar: "🔩",
+    telefone: "31900000004",
+    anos: 12,
+    valor_hora: 90
+  },
+  {
+    id: 6,
+    nome: "Fernanda Souza",
+    especialidade: "Pintor",
+    cidade: "Sarzedo",
+    estado: "MG",
+    nota: 4.7,
+    avaliacoes: 15,
+    servicos: 27,
+    descricao: "Pintura residencial e comercial. Textura, grafiato, pintura interna e externa. Trabalho com materiais de qualidade e acabamento impecável.",
+    plano: "profissional",
+    selos: ["fundador", "bem"],
+    disponivel: true,
+    avatar: "🎨",
+    telefone: "31900000005",
+    anos: 7,
+    valor_hora: 85
+  }
+];
+
+let dadosFiltrados = [...PRESTADORES];
+
+// ── Selos helper ─────────────────────────────────────
+function renderSelos(selos) {
+  const map = {
+    fundador: '<span class="selo selo-fundador">⚡ FUNDADOR</span>',
+    bem:      '<span class="selo selo-bem">bem-FEITO✅</span>',
+    perfeito: '<span class="selo selo-perfeito">perFEITO✅</span>',
+    dito:     '<span class="selo selo-dito">Dito e FEITO✅</span>'
+  };
+  return selos.map(s => map[s] || '').join('');
+}
+
+function renderStars(nota) {
+  const full = Math.floor(nota);
+  const half = nota % 1 >= 0.5;
+  let s = '★'.repeat(full);
+  if (half) s += '½';
+  return s;
+}
+
+function planoLabel(p) {
+  const m = { essencial: 'Plano Essencial', profissional: 'Plano Profissional', especialista: 'Plano Especialista', premium: 'Plano Premium' };
+  return m[p] || p;
+}
+
+// ── Renderizar cards ─────────────────────────────────
+function renderCards(lista) {
+  const grid = document.getElementById('cards-grid');
+  const empty = document.getElementById('empty-state');
+  document.getElementById('count-num').textContent = lista.length;
+
+  if (lista.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = lista.map(p => `
+    <a class="prestador-card" href="#" onclick="abrirModal(${p.id}); return false;">
+      ${p.disponivel ? '<div class="disponivel-badge" title="Disponível agora"></div>' : ''}
+      <div class="card-top">
+        <div class="card-avatar">${p.avatar}</div>
+        <div class="card-info">
+          <div class="card-nome">${p.nome}</div>
+          <div class="card-esp">${p.especialidade}</div>
+          <div class="card-local">📍 ${p.cidade}, ${p.estado}</div>
+        </div>
+      </div>
+      <div class="card-selos">${renderSelos(p.selos)}</div>
+      <div class="card-nota">
+        <span class="nota-stars">${renderStars(p.nota)}</span>
+        <span class="nota-num">${p.nota.toFixed(1)}</span>
+        <span class="nota-count">(${p.avaliacoes} avaliações)</span>
+      </div>
+      <div class="card-desc">${p.descricao}</div>
+      <div class="card-footer">
+        <span class="card-plano">${planoLabel(p.plano)}</span>
+        <span class="card-btn">Ver perfil →</span>
+      </div>
+    </a>
+  `).join('');
+}
+
+// ── Filtrar ──────────────────────────────────────────
+function filtrar() {
+  const esp = document.getElementById('busca-esp').value.toLowerCase();
+  const cid = document.getElementById('busca-cidade').value.toLowerCase();
+  dadosFiltrados = PRESTADORES.filter(p =>
+    (!esp || p.especialidade.toLowerCase().includes(esp) || p.nome.toLowerCase().includes(esp) || p.descricao.toLowerCase().includes(esp)) &&
+    (!cid || p.cidade.toLowerCase().includes(cid) || p.estado.toLowerCase().includes(cid))
+  );
+  ordenar(document.querySelector('.sort-select').value, false);
+}
+
+function filtroRapido(el, esp) {
+  document.querySelectorAll('.filtro-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('busca-esp').value = esp;
+  filtrar();
+}
+
+// ── Ordenar ──────────────────────────────────────────
+function ordenar(criterio, render = true) {
+  if (criterio === 'nota') dadosFiltrados.sort((a,b) => b.nota - a.nota);
+  else if (criterio === 'nome') dadosFiltrados.sort((a,b) => a.nome.localeCompare(b.nome));
+  else if (criterio === 'servicos') dadosFiltrados.sort((a,b) => b.servicos - a.servicos);
+  renderCards(dadosFiltrados);
+}
+
+// ── Modal ────────────────────────────────────────────
+function abrirModal(id) {
+  const p = PRESTADORES.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('modal-header').innerHTML = `
+    <div class="modal-avatar">${p.avatar}</div>
+    <div class="modal-info">
+      <h2>${p.nome}</h2>
+      <div class="modal-esp">${p.especialidade}</div>
+      <div class="modal-local">📍 ${p.cidade}, ${p.estado} · ${p.disponivel ? '🟢 Disponível agora' : '🔴 Indisponível'}</div>
+      <div style="margin-top:8px">${renderSelos(p.selos)}</div>
+    </div>
+  `;
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-stats">
+      <div class="modal-stat">
+        <div class="modal-stat-n">${p.nota.toFixed(1)}</div>
+        <div class="modal-stat-l">nota média</div>
+      </div>
+      <div class="modal-stat">
+        <div class="modal-stat-n">${p.avaliacoes}</div>
+        <div class="modal-stat-l">avaliações</div>
+      </div>
+      <div class="modal-stat">
+        <div class="modal-stat-n">${p.servicos}</div>
+        <div class="modal-stat-l">serviços</div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h4>Sobre</h4>
+      <p>${p.descricao}</p>
+    </div>
+
+    <div class="modal-section">
+      <h4>Informações</h4>
+      <p>
+        🕐 ${p.anos} anos de experiência<br>
+        💰 ${p.valor_hora ? 'A partir de R$' + p.valor_hora + '/hora' : 'Valor a combinar'}<br>
+        📋 ${planoLabel(p.plano)}
+      </p>
+    </div>
+
+    <div class="modal-actions">
+      <a class="btn-orcamento" href="feito-lead.html?prestador=${p.id}&nome=${encodeURIComponent(p.nome)}&esp=${encodeURIComponent(p.especialidade)}">
+        ✅ Solicitar orçamento
+      </a>
+      <a class="btn-wpp" href="https://wa.me/55${p.telefone}?text=Olá%20${encodeURIComponent(p.nome)}!%20Te%20encontrei%20na%20FEITO✅%20e%20gostaria%20de%20um%20orçamento." target="_blank">
+        📱 WhatsApp
+      </a>
+    </div>
+  `;
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModal(e) {
+  if (!e || e.target === document.getElementById('modal') || e.target.classList.contains('modal-close')) {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+// ── Init ─────────────────────────────────────────────
+renderCards(PRESTADORES);
+</script>
+</body>
+</html>
